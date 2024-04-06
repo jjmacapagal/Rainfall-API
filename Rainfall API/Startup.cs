@@ -10,7 +10,9 @@ namespace Rainfall_API
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add services
+            services.AddHttpClient();
+
+            // Register services
             services.AddScoped<IRainfallSvc, RainfallSvc>();
 
             services.AddControllers()

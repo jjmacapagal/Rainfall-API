@@ -23,11 +23,15 @@ namespace Rainfall_API.Controllers
         }
 
         // v1.0
-        private ActionResult<RainfallReadingResponse> GetReadingsV1(int stationId, int count)
+        private async Task<ActionResult<RainfallReadingResponse>> GetReadingsV1(string stationId, int count)
         {
-            // Your existing logic for version 1.0
-            // This is where you return List<RainfallReading>
-            return Ok();
+            var readings = await _rainfallService.GetReadings(stationId, count);
+            if (readings.Count == 0)
+            {
+                return NotFound(new ErrorResponse("No readings found for the specified stationId"));
+            }
+
+            return Ok(new RainfallReadingResponse(readings));
         }
 
         // in case we want to use the versioning in the URL
@@ -46,7 +50,7 @@ namespace Rainfall_API.Controllers
         [SwaggerResponse(400, "Invalid request", typeof(ErrorResponse))]
         [SwaggerResponse(404, "No readings found for the specified stationId", typeof(ErrorResponse))]
         [SwaggerResponse(500, "Internal server error", typeof(ErrorResponse))]
-        public ActionResult<RainfallReadingResponse> GetReadings(string stationId, [FromQuery, Range(1, 100)] int count = 10)
+        public async Task<ActionResult<RainfallReadingResponse>> GetReadings(string stationId, [FromQuery, Range(1, 100)] int count = 10)
         {
             try
             {
@@ -60,9 +64,7 @@ namespace Rainfall_API.Controllers
                     return BadRequest(new ErrorResponse("Invalid count"));
                 }
 
-                var id = int.Parse(stationId);
-
-                return GetReadingsV1(id, count);
+                return await GetReadingsV1(stationId, count);
 
                 // // Check the version query parameter
                 // switch (version)
