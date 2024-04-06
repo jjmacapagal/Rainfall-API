@@ -1,11 +1,13 @@
 
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Rainfall_API.Models.API;
 
 namespace Rainfall_API.Controllers
 {
     [ApiController]
     //
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class RainfallController : ControllerBase
     {
         // 
@@ -16,20 +18,41 @@ namespace Rainfall_API.Controllers
             _rainfallService = rainfallService;
         }
 
-        [HttpGet("id/{stationId}/readings")]
-        public IActionResult GetReadings(int stationId)
+        // v1.0
+        private ActionResult<RainfallReadingResponse> GetReadingsV1(int stationId, int count)
         {
-            // Call your service to retrieve readings for the specified stationId
-            var readings = _rainfallService.GetReadings(stationId);
+            // Your existing logic for version 1.0
+            // This is where you return List<RainfallReading>
+            return Ok();
+        }
 
-            if (readings == null)
+        [HttpGet("id/{stationId}/readings")]
+        [ProducesResponseType(typeof(RainfallReadingResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 400)]
+        [ProducesResponseType(typeof(ErrorResponse), 404)]
+        [ProducesResponseType(typeof(ErrorResponse), 500)]
+        public ActionResult<RainfallReadingResponse> GetReadings(string stationId, [FromQuery, Range(1, 100)] int count = 10, [FromQuery] string version = "1.0")
+        {
+            if (string.IsNullOrWhiteSpace(stationId))
             {
-                // Return 404 Not Found if no readings are found for the specified stationId
-                return NotFound();
+                return BadRequest(new ErrorResponse("Invalid stationId"));
             }
 
-            // Return the readings as JSON
-            return Ok(readings);
+            if (count < 1 || count > 100)
+            {
+                return BadRequest(new ErrorResponse("Invalid count"));
+            }
+
+            var id = int.Parse(stationId);
+
+            // Check the version query parameter
+            switch (version)
+            {
+                case "1.0":
+                    return GetReadingsV1(id, count);
+                default:
+                    return BadRequest(new ErrorResponse("Invalid version"));
+            }
         }
     }
 }

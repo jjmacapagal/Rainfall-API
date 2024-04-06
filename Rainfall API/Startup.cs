@@ -1,4 +1,8 @@
+using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Rainfall_API.Controllers;
+using Rainfall_API.Filters;
+using Rainfall_API.Services;
 
 namespace Rainfall_API
 {
@@ -6,6 +10,9 @@ namespace Rainfall_API
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add services
+            services.AddScoped<IRainfallSvc, RainfallSvc>();
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(opt =>
@@ -34,9 +41,14 @@ namespace Rainfall_API
                     Url = "https://localhost:7124",
                     Description = "Rainfall API HTTPS"
                 });
-
+                
+                opt.SchemaFilter<SwaggerTitleFilter>(); 
 
                 opt.TagActionsBy(api => new[] { api.GroupName });
+                
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                opt.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -50,6 +62,8 @@ namespace Rainfall_API
                     c.SwaggerEndpoint("/swagger/1.0/swagger.json", "Rainfall API v1.0");
                 });
             }
+
+            
 
             app.UseHttpsRedirection();
             app.UseRouting();
