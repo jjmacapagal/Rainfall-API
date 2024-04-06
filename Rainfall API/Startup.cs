@@ -1,7 +1,7 @@
 using System.Reflection;
+using System.Text.Json;
 using Microsoft.OpenApi.Models;
 using Rainfall_API.Controllers;
-using Rainfall_API.Filters;
 using Rainfall_API.Services;
 
 namespace Rainfall_API
@@ -13,10 +13,17 @@ namespace Rainfall_API
             // Add services
             services.AddScoped<IRainfallSvc, RainfallSvc>();
 
-            services.AddControllers();
+            services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
+            
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(opt =>
             {
+                opt.EnableAnnotations();
+
                 // hardcode for now, update later once everything is working.
                 opt.SwaggerDoc("1.0", new OpenApiInfo 
                 { 
@@ -32,19 +39,15 @@ namespace Rainfall_API
 
                 opt.AddServer(new OpenApiServer
                 {
-                    Url = "http://localhost:5188",
-                    Description = "Rainfall API HTTP"
+                    Url = "https://localhost:7124",
+                    Description = "Rainfall API HTTPS"
                 });
 
                 opt.AddServer(new OpenApiServer
                 {
-                    Url = "https://localhost:7124",
-                    Description = "Rainfall API HTTPS"
+                    Url = "http://localhost:5188",
+                    Description = "Rainfall API HTTP"
                 });
-                
-                opt.SchemaFilter<SwaggerTitleFilter>(); 
-
-                opt.TagActionsBy(api => new[] { api.GroupName });
                 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);

@@ -1,11 +1,8 @@
-using Rainfall_API.Models.Attributes;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Rainfall_API.Models.API
 {
-    /// <summary>
-    /// Details of a rainfall reading
-    /// </summary>
-    [Title("Rainfall Reading Response")]
+    [SwaggerSchema(Title = "Rainfall reading response", Description = "Details of a rainfall reading")]
     public class RainfallReadingResponse
     {
         public List<RainfallReading> Readings { get; set; }
