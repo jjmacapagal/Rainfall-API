@@ -1,6 +1,8 @@
 
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Rainfall_API.Exceptions.Rainfall;
+using Rainfall_API.Interfaces;
 using Rainfall_API.Models.API;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -16,10 +18,10 @@ namespace Rainfall_API.Controllers
 
         private readonly ILogger<RainfallController> _logger;
 
-        public RainfallController(IRainfallSvc rainfallService, ILoggerFactory loggerFactory)
+        public RainfallController(IRainfallSvc rainfallService, ILogger<RainfallController> logger)
         {
             _rainfallService = rainfallService;
-            _logger = loggerFactory.CreateLogger<RainfallController>();
+            _logger = logger;
         }
 
         // v1.0
@@ -54,11 +56,6 @@ namespace Rainfall_API.Controllers
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(stationId))
-                {
-                    return BadRequest(new ErrorResponse("Invalid stationId"));
-                }
-
                 if (count < 1 || count > 100)
                 {
                     return BadRequest(new ErrorResponse("Invalid count"));
@@ -74,6 +71,11 @@ namespace Rainfall_API.Controllers
                 //     default:
                 //         return BadRequest(new ErrorResponse("Invalid version"));
                 // }
+            }
+            catch (InvalidStationIdException ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return NotFound(new ErrorResponse(ex.Message));
             }
             catch (Exception ex)
             {

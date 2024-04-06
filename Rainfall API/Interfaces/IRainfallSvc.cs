@@ -1,6 +1,6 @@
 using Rainfall_API.Models.API;
 
-namespace Rainfall_API.Controllers
+namespace Rainfall_API.Interfaces
 {
     public interface IRainfallSvc
     {
