@@ -3,20 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainfall API", "Rainfall API\Rainfall API.csproj", "{CCA923EE-D835-43DC-BBEF-A99FAA15603D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rainfall API", "Rainfall API\Rainfall API.csproj", "{CCA923EE-D835-43DC-BBEF-A99FAA15603D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rainfall API Test", "Rainfall API Test\Rainfall API Test.csproj", "{8DD46B59-6759-44F2-9F66-DB5DA2463C96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CCA923EE-D835-43DC-BBEF-A99FAA15603D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CCA923EE-D835-43DC-BBEF-A99FAA15603D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCA923EE-D835-43DC-BBEF-A99FAA15603D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCA923EE-D835-43DC-BBEF-A99FAA15603D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD46B59-6759-44F2-9F66-DB5DA2463C96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD46B59-6759-44F2-9F66-DB5DA2463C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD46B59-6759-44F2-9F66-DB5DA2463C96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD46B59-6759-44F2-9F66-DB5DA2463C96}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F5C63F9-DD67-4C9B-AA25-9AB3A0CA5E3A}
 	EndGlobalSection
 EndGlobal
