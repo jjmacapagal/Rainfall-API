@@ -1,7 +1,4 @@
-using Castle.Core.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Newtonsoft.Json;
 using Rainfall_API.Exceptions.Rainfall;
 using Rainfall_API.Interfaces;
 using Rainfall_API.Services;
