@@ -13,7 +13,6 @@ namespace Rainfall_API.Controllers
     [SwaggerTag("Operations relating to rainfall")]
     public class RainfallController : ControllerBase
     {
-        // 
         private readonly IRainfallSvc _rainfallService;
 
         private readonly ILogger<RainfallController> _logger;
@@ -25,20 +24,15 @@ namespace Rainfall_API.Controllers
         }
 
         // v1.0
-        private async Task<ActionResult<RainfallReadingResponse>> GetReadingsV1(string stationId, int count)
+        private async Task<ActionResult<RainfallReadingResponse>> GetReadingsV1(string stationId, int? count)
         {
             var readings = await _rainfallService.GetReadings(stationId, count);
-            if (readings.Count == 0)
-            {
-                return NotFound(new ErrorResponse("No readings found for the specified stationId"));
-            }
 
             return Ok(new RainfallReadingResponse(readings));
         }
 
         // in case we want to use the versioning in the URL
         // public ActionResult<RainfallReadingResponse> GetReadings(string stationId, [FromQuery, Range(1, 100)] int count = 10, [FromQuery] string version = "1.0")
-
         /// <param name="stationId">The id of the reading station.</param>
         /// <param name="count">The number of readings to return</param>
         /// <returns>A list of rainfall readings successfully retrieved.</returns>
@@ -52,7 +46,7 @@ namespace Rainfall_API.Controllers
         [SwaggerResponse(400, "Invalid request", typeof(ErrorResponse))]
         [SwaggerResponse(404, "No readings found for the specified stationId", typeof(ErrorResponse))]
         [SwaggerResponse(500, "Internal server error", typeof(ErrorResponse))]
-        public async Task<ActionResult<RainfallReadingResponse>> GetReadings(string stationId, [FromQuery, Range(1, 100)] int count = 10)
+        public async Task<ActionResult<RainfallReadingResponse>> GetReadings(string stationId, [FromQuery, Range(1, 100)] int? count)
         {
             try
             {
@@ -62,15 +56,6 @@ namespace Rainfall_API.Controllers
                 }
 
                 return await GetReadingsV1(stationId, count);
-
-                // // Check the version query parameter
-                // switch (version)
-                // {
-                //     case "1.0":
-                //         return GetReadingsV1(id, count);
-                //     default:
-                //         return BadRequest(new ErrorResponse("Invalid version"));
-                // }
             }
             catch (InvalidStationIdException ex)
             {

@@ -4,6 +4,6 @@ namespace Rainfall_API.Interfaces
 {
     public interface IRainfallSvc
     {
-        Task<List<RainfallReading>> GetReadings(string stationId, int count);
+        Task<List<RainfallReading>> GetReadings(string stationId, int? count);
     }
 }

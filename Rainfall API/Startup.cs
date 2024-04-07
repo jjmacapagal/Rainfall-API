@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text.Json;
 using Microsoft.OpenApi.Models;
 using Rainfall_API.Interfaces;
+using Rainfall_API.Repositories;
 using Rainfall_API.Services;
 
 namespace Rainfall_API
@@ -11,10 +12,12 @@ namespace Rainfall_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             // Register services
             services.AddScoped<IHttpClientWrapper, HttpClientWrapper>();
             services.AddScoped<IRainfallSvc, RainfallSvc>();
+            services.AddScoped<IRainfallRepository, RainfallRepository>();
 
             services.AddControllers()
             .AddJsonOptions(options =>
