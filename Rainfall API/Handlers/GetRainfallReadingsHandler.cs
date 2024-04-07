@@ -7,16 +7,16 @@ namespace Rainfall_API.Handlers
 {
     public class GetRainfallReadingsHandler : IRequestHandler<GetRainfallReadingsQuery, List<RainfallReading>>
     {
-        private readonly IRainfallRepository _rainfallRepo;
+        private readonly IRainfallSvc _rainfallSvc;
 
-        public GetRainfallReadingsHandler(IRainfallRepository rainfallRepo)
+        public GetRainfallReadingsHandler(IRainfallSvc rainfallRepo)
         {
-            _rainfallRepo = rainfallRepo;
+            _rainfallSvc = rainfallRepo;
         }
 
         public async Task<List<RainfallReading>> Handle(GetRainfallReadingsQuery query, CancellationToken cancellationToken)
         {
-            return await _rainfallRepo.GetRainfallByStationId(query.StationId, query.Count);
+            return await _rainfallSvc.GetReadings(query.StationId, query.Count);
         }
     }
 }

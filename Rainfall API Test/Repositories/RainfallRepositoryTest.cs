@@ -1,7 +1,6 @@
 using Moq;
 using Rainfall_API.Exceptions.Rainfall;
 using Rainfall_API.Interfaces;
-using Rainfall_API.Models.API;
 using Rainfall_API.Repositories;
 using System.Net;
 

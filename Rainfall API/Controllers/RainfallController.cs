@@ -1,9 +1,11 @@
 
 using System.ComponentModel.DataAnnotations;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Rainfall_API.Exceptions.Rainfall;
 using Rainfall_API.Interfaces;
 using Rainfall_API.Models.API;
+using Rainfall_API.Queries;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Rainfall_API.Controllers
@@ -13,20 +15,20 @@ namespace Rainfall_API.Controllers
     [SwaggerTag("Operations relating to rainfall")]
     public class RainfallController : ControllerBase
     {
-        private readonly IRainfallSvc _rainfallService;
+        private readonly IMediator _mediator;
 
         private readonly ILogger<RainfallController> _logger;
 
-        public RainfallController(IRainfallSvc rainfallService, ILogger<RainfallController> logger)
+        public RainfallController(IRainfallSvc rainfallService, ILogger<RainfallController> logger, IMediator mediator)
         {
-            _rainfallService = rainfallService;
+            _mediator = mediator;
             _logger = logger;
         }
 
         // v1.0
         private async Task<ActionResult<RainfallReadingResponse>> GetReadingsV1(string stationId, int? count)
         {
-            var readings = await _rainfallService.GetReadings(stationId, count);
+            var readings = await _mediator.Send(new GetRainfallReadingsQuery(stationId, count));
 
             return Ok(new RainfallReadingResponse(readings));
         }

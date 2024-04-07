@@ -1,25 +1,26 @@
-using MediatR;
 using Rainfall_API.Interfaces;
 using Rainfall_API.Models.API;
-using Rainfall_API.Queries;
 
 namespace Rainfall_API.Services
 {
     public class RainfallSvc : IRainfallSvc
     {
-        private readonly IMediator _mediator;
+        private readonly IRainfallRepository _rainfallRepo;
 
-        public RainfallSvc(IMediator mediator)
+        public RainfallSvc(IRainfallRepository rainfallRepo)
         {
-            _mediator = mediator;
+            _rainfallRepo = rainfallRepo;
         }
 
         // Implement the methods from IRainfallSvc here
         public async Task<List<RainfallReading>> GetReadings(string stationId, int? count)
         {
-            var query = new GetRainfallReadingsQuery(stationId, count);
-            var result = await _mediator.Send(query);
-            return result;
+            return await GetReadings(stationId, count ?? 10);
+        }
+
+        private async Task<List<RainfallReading>> GetReadings(string stationId, int count)
+        {
+            return await _rainfallRepo.GetRainfallByStationId(stationId, count);
         }
     }
 }

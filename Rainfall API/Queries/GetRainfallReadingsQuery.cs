@@ -9,10 +9,15 @@ namespace Rainfall_API.Queries
 
         public int Count { get; set; }
 
-        public GetRainfallReadingsQuery(string stationId, int? count)
+        public GetRainfallReadingsQuery(string stationId)
         {
             StationId = stationId;
-            Count = count ?? 10;
+            Count = 10;
+        }
+
+        public GetRainfallReadingsQuery(string stationId, int? count) : this(stationId)
+        {
+            Count = count ?? Count;
         }
     }
 }
